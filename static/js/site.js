@@ -134,6 +134,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const main = document.querySelector("[data-gallery-main]");
   document.querySelectorAll("[data-gallery-thumb]").forEach((button) => button.addEventListener("click", () => {
     if (!main) return;
+    main.srcset = button.dataset.gallerySrcset || '';
     main.src = button.dataset.galleryThumb;
     main.alt = button.dataset.galleryAlt || "Product image";
     document.querySelectorAll("[data-gallery-thumb]").forEach((item) => { item.classList.remove("active"); item.setAttribute("aria-pressed", "false"); });

@@ -1,6 +1,6 @@
 from urllib.parse import quote
 from django.contrib import messages
-from django.db.models import Q, Exists, OuterRef, Subquery, Prefetch
+from django.db.models import Q, Exists, OuterRef, Subquery
 from django.core.paginator import Paginator
 from django.shortcuts import get_object_or_404, redirect, render
 from django.views.decorators.http import require_POST
@@ -8,9 +8,10 @@ from django.utils.http import url_has_allowed_host_and_scheme
 from apps.core.models import SiteSettings
 from django.http import JsonResponse
 from django.template.loader import render_to_string
+from .queries import card_products
 from .search import search_products
 from .forms import ProductFilterForm, QuoteItemForm
-from .models import Brand, Category, Product, ProductImage, ProductCompatibility
+from .models import Brand, Category, Product, ProductCompatibility
 from .taxonomy import CCTV_ROOT, CAMERAS, CAMERA_LEAVES, descendants
 
 
@@ -30,10 +31,7 @@ def safe_next(request, fallback):
 
 
 def product_list(request, category_slug=None, brand_slug=None):
-    products = Product.objects.filter(is_active=True, is_published=True).select_related("brand").only(
-        "name", "slug", "sku", "model_number", "short_description", "featured_image",
-        "price_display_mode", "price", "starting_price", "currency", "is_demo", "is_featured", "is_new", "brand__name",
-    ).prefetch_related(Prefetch("images", queryset=ProductImage.objects.filter(is_primary=True).only("product_id", "image", "is_primary")))
+    products = card_products()
     categories = list(Category.objects.filter(is_active=True, is_published=True))
     category_map = {category.slug: category for category in categories}
     initial = {"category": request.GET.get("category", category_slug or ""), "brand": request.GET.get("brand", brand_slug or ""), "q": request.GET.get("q", ""), "availability": request.GET.get("availability", ""), "sort": request.GET.get("sort", "featured")}
@@ -91,7 +89,7 @@ def product_detail(request, slug):
     settings = SiteSettings.load()
     digits = "".join(c for c in settings.whatsapp_number if c.isdigit())
     message = f"Hello, I would like information about {product.name}: {settings.public_url}{product.get_absolute_url()}"
-    return render(request, "catalogue/product_detail.html", {"product": product, "compatibility_links": verified_pairings().filter(product=product), "related": public_products().filter(primary_category=product.primary_category).exclude(pk=product.pk)[:4], "public_documents": product.documents.filter(visibility="public"), "whatsapp_url": f"https://wa.me/{digits}?text={quote(message)}" if settings.show_whatsapp and digits else ""})
+    return render(request, "catalogue/product_detail.html", {"product": product, "compatibility_links": verified_pairings().filter(product=product), "related": card_products().filter(primary_category=product.primary_category).exclude(pk=product.pk)[:4], "public_documents": product.documents.filter(visibility="public"), "whatsapp_url": f"https://wa.me/{digits}?text={quote(message)}" if settings.show_whatsapp and digits else ""})
 
 
 @require_POST
@@ -110,7 +108,7 @@ def add_quote_item(request):
 
 def quote_list(request):
     items = request.session.get("quote_products", [])
-    products = {product.pk: product for product in public_products().filter(pk__in=[item["id"] for item in items])}
+    products = {product.pk: product for product in Product.objects.filter(is_active=True, is_published=True, pk__in=[item["id"] for item in items]).only("name", "slug", "installation_required")}
     return render(request, "catalogue/quote_list.html", {"quote_items": [{"product": products[item["id"]], "quantity": item["quantity"]} for item in items if item["id"] in products]})
 
 
@@ -143,7 +141,7 @@ def search_suggestions(request):
     query = request.GET.get("q", "").strip()[:100]
     if request.GET.get("discovery") == "1":
         categories = Category.objects.filter(is_active=True, is_published=True).values("name", "slug")[:100]
-        recommended = Product.objects.filter(is_active=True, is_published=True, is_featured=True).order_by("display_order", "pk")[:4]
+        recommended = Product.objects.filter(is_active=True, is_published=True, is_featured=True).only("name", "slug").order_by("display_order", "pk")[:4]
         return JsonResponse({"categories": list(categories), "recommended": [{"title": p.name, "url": p.get_absolute_url()} for p in recommended]})
     if len(query) < 2:
         return JsonResponse({"results": []})
