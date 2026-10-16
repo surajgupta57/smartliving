@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+{% block title %}{{ title }} | {{ site_settings.company_name }}{% endblock %}
+{% block content %}
+<section class="section">
+  <span class="eyebrow">Smart Living Technologies</span><h1>{{ title }}</h1>
+  {% if kind == 'solution' %}<p>Understand what each system can do, what it needs on site, and what to confirm before choosing products.</p>{% endif %}
+  {% if kind == 'service' %}<p>From a first site assessment to installation and maintenance: understand the scope, the checks and the next step.</p>{% endif %}
+  {% if pages %}
+    {% if kind == 'project' %}<h2>Project case studies</h2>{% endif %}
+    <div class="grid">{% for page in pages %}{% include 'cms/content_card.html' %}{% endfor %}</div>
+  {% elif not project_guides %}
+    <div class="empty"><h2>New content is coming soon.</h2><p>Our team can help you plan a solution today.</p><a class="button" href="{% url 'leads:contact' %}">Get in touch</a></div>
+  {% endif %}
+  {% if project_guides %}
+    <h2>Plan your project</h2>
+    <p>Practical planning guides for common property types. These describe proposed scopes, not completed customer installations. Final products, quantities and charges are confirmed after assessment.</p>
+    <div class="grid">{% for page in project_guides %}{% include 'cms/content_card.html' %}{% endfor %}</div>
+  {% endif %}
+</section>
+{% endblock %}

@@ -1,0 +1,18 @@
+<section class="product-content-section" id="compatible-products">
+  <span class="eyebrow">Build your system</span><h2>Works with.</h2>
+  <p>Pairings apply to the configuration described below. A pairing does not establish compatibility between every item in your quote list.</p>
+  <div class="grid">
+  {% for link in compatibility_links %}
+    <article class="panel">
+      <span class="badge">{{ link.get_role_display }}</span>
+      <h3><a href="{{ link.companion.get_absolute_url }}">{{ link.companion.name }}</a></h3>
+      <p>{{ link.requirements|linebreaksbr }}</p>
+      <p><a href="{{ link.evidence_url }}" target="_blank" rel="noopener noreferrer">Compatibility evidence ↗</a> · Checked {{ link.verified_on|date:'d M Y' }}</p>
+      <form method="post" action="{% url 'catalogue:add_compatible_pair' link.pk %}">{% csrf_token %}<button class="button outline">Add both products to quote</button></form>
+      <small>One of each is added unless already listed. The team will confirm quantities, capacity and installation.</small>
+    </article>
+  {% empty %}
+    <div class="panel"><h3>Let us check your configuration.</h3><p>We have not published verified pairings for this product yet. Share your existing equipment, model numbers and requirements.</p><a class="button outline" href="{% url 'leads:product_enquiry' product.slug %}">Ask about compatibility</a></div>
+  {% endfor %}
+  </div>
+</section>

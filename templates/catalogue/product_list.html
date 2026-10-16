@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+{% block title %}Products | {{ site_settings.company_name }}{% endblock %}
+{% block content %}
+<section class="section">
+<div class="catalogue-heading"><div><span class="eyebrow">Choose your next system</span><h1>Technology for your space.</h1></div><p>Explore our product catalogue. Compare manufacturer specifications, build a shortlist and request a tailored quote.</p></div>
+<p><a class="button outline" href="{% url 'catalogue:product_finder' %}">Not sure where to start? Find your system →</a></p>
+<div class="brand-discovery"><span>Browse by manufacturer</span><a href="{% url 'catalogue:product_list' %}">All brands</a>{% for brand in brands %}<a href="{% url 'catalogue:brand_list' brand.slug %}" {% if form.brand.value == brand.slug %}class="is-active"{% endif %}>{{ brand.name }}</a>{% endfor %}</div>
+<form method="get" data-catalogue-filters>
+<div class="catalogue-workspace"><aside class="filter-panel"><span class="eyebrow">Refine results</span><h2>Product filters</h2><button type="button" data-filter-toggle hidden aria-expanded="true" aria-controls="catalogue-filter-controls">Product filters</button><div id="catalogue-filter-controls"><div class="filters">
+<label class="sr-only" for="catalogue-search">Search products</label><input id="catalogue-search" name="q" value="{{ form.q.value|default:'' }}" maxlength="100" placeholder="Search products, brand, model or SKU">
+<label class="sr-only" for="catalogue-category">Category</label><select id="catalogue-category" name="category"><option value="">All categories</option>{% for category in categories %}<option value="{{ category.slug }}" {% if form.category.value == category.slug %}selected{% endif %}>{{ category.name }}</option>{% endfor %}{% if selected_child %}<option value="{{ selected_child.slug }}" selected>{{ selected_child.name }} — current category</option>{% endif %}</select>
+<label class="sr-only" for="catalogue-brand">Brand</label><select id="catalogue-brand" name="brand"><option value="">All brands</option>{% for brand in brands %}<option value="{{ brand.slug }}" {% if form.brand.value == brand.slug %}selected{% endif %}>{{ brand.name }}</option>{% endfor %}</select>
+<label class="sr-only" for="catalogue-sort">Sort products</label><select id="catalogue-sort" name="sort">{% for value,label in form.sort.field.choices %}<option value="{{ value }}" {% if form.sort.value == value %}selected{% endif %}>{{ label }}</option>{% endfor %}</select>
+<label class="sr-only" for="availability">Availability</label><select id="availability" name="availability">{% for value,label in form.availability.field.choices %}<option value="{{ value }}" {% if form.availability.value == value %}selected{% endif %}>{{ label }}</option>{% endfor %}</select>
+</div>
+<fieldset class="cctv-filters" data-cctv-filters {% if not show_cctv %}hidden disabled{% endif %}>
+<legend>CCTV &amp; Surveillance</legend><p>Choose a product type, then refine cameras by their design and connectivity.</p>
+<div class="cctv-filter-grid"><label>Product type {{ form.product_type }}</label><label>Camera technology {{ form.camera_technology }}</label><label>Camera design {{ form.camera_shape }}</label><label>Camera movement {{ form.camera_motion }}</label><label>Camera connection {{ form.camera_connection }}</label></div>
+</fieldset>
+{% if form.errors %}<p role="alert">Please select valid filter options.</p>{% endif %}<label>Show per page <select name="per_page"><option value="12" {% if per_page == "12" %}selected{% endif %}>12</option><option value="24" {% if per_page == "24" %}selected{% endif %}>24</option><option value="48" {% if per_page == "48" %}selected{% endif %}>48</option></select></label><button class="button">Apply filters</button><p data-filter-status role="status">Results update as you type.</p></div></aside>
+
+<div data-catalogue-results aria-live="polite">{% include "catalogue/_results.html" %}</div></div></form>
+</section>{% endblock %}

@@ -1,0 +1,32 @@
+{% extends 'workspace/base.html' %}{% load tz %}
+{% block workspace_content %}
+<div class="page-heading"><div><span class="eyebrow">Stay on top of customer conversations</span><h1>Follow-up notifications</h1><p class="muted">Overdue and upcoming follow-ups for today. All times are IST.</p></div><a class="button" href="?scope={{ scope }}&amp;period={{ period }}">Refresh reminders</a></div>
+<nav class="crm-stage-tabs" aria-label="Reminder scope">
+  <a href="?scope=mine" {% if scope == 'mine' %}aria-current="page"{% endif %}>My follow-ups</a>
+  <a href="?scope=unassigned" {% if scope == 'unassigned' %}aria-current="page"{% endif %}>Unassigned <span data-unassigned-reminder-count>{{ followup_reminders.unassigned }}</span></a>
+  <a href="?scope=all" {% if scope == 'all' %}aria-current="page"{% endif %}>All team follow-ups</a>
+</nav>
+<div class="metric-grid reminder-metrics">
+  <a class="metric" href="?scope={{ scope }}&amp;period=all"><span>All reminders</span><strong>{{ counts.total }}</strong><small>Overdue and scheduled today</small></a>
+  <a class="metric" href="?scope={{ scope }}&amp;period=overdue"><span>Due now / overdue</span><strong>{{ counts.overdue }}</strong><small>Contact these customers first</small></a>
+  <a class="metric" href="?scope={{ scope }}&amp;period=today"><span>Later today</span><strong>{{ counts.today }}</strong><small>Upcoming before midnight IST</small></a>
+</div>
+<div class="crm-queue-heading"><div><h2>{% if period == 'overdue' %}Due now / overdue{% elif period == 'today' %}Later today{% else %}Reminder queue{% endif %}</h2><span class="muted">{{ page.paginator.count }} follow-up{{ page.paginator.count|pluralize }} · {% if scope == 'mine' %}Assigned to you{% elif scope == 'unassigned' %}Awaiting an owner{% else %}Across the team{% endif %}</span></div></div>
+<div class="panel reminder-list">
+{% for lead in page %}
+  <article class="reminder-item">
+    <div class="reminder-icon {% if lead.follow_up_at <= now %}is-overdue{% endif %}" aria-hidden="true">{% if lead.follow_up_at <= now %}!{% else %}◷{% endif %}</div>
+    <div class="reminder-content">
+      <div class="reminder-item-heading"><a href="{% url 'leads:workspace_lead' lead.pk %}"><strong>{{ lead.name }}</strong></a><span class="status-badge priority-{{ lead.priority }}">{{ lead.get_priority_display }}</span><span class="status-badge {% if lead.follow_up_at <= now %}priority-urgent{% endif %}">{% if lead.follow_up_at <= now %}Due now / overdue{% else %}Later today{% endif %}</span></div>
+      <p><time datetime="{{ lead.follow_up_at|date:'c' }}">{{ lead.follow_up_at|timezone:'Asia/Kolkata'|date:'d M Y, h:i A' }} IST</time> · {{ lead.get_status_display }}</p>
+      <small>Owner: {{ lead.assigned_to.get_full_name|default:lead.assigned_to|default:'Unassigned' }} · <a href="tel:{{ lead.phone }}">{{ lead.phone }}</a></small>
+    </div>
+    <a class="button outline" href="{% url 'leads:workspace_lead' lead.pk %}">{% if perms.leads.change_enquiry %}Record follow-up{% else %}View enquiry{% endif %} →</a>
+  </article>
+{% empty %}
+  <div class="empty-state"><strong>No follow-ups need attention in this view.</strong><p>Scheduled follow-ups appear here when they are due today or overdue.</p><a href="{% url 'leads:workspace_leads' %}">Browse enquiries →</a></div>
+{% endfor %}
+</div>
+<nav class="pagination" aria-label="Reminder pages">{% if page.has_previous %}<a href="?scope={{ scope }}&amp;period={{ period }}&amp;page={{ page.previous_page_number }}">← Previous</a>{% endif %}<span>Page {{ page.number }} of {{ page.paginator.num_pages }}</span>{% if page.has_next %}<a href="?scope={{ scope }}&amp;period={{ period }}&amp;page={{ page.next_page_number }}">Next →</a>{% endif %}</nav>
+<p class="muted">{% if perms.leads.change_enquiry %}After contacting a customer, open the enquiry to record a note and reschedule or clear the follow-up. {% endif %}Closed enquiries leave this queue automatically.</p>
+{% endblock %}

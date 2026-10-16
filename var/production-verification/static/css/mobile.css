@@ -1,0 +1,46 @@
+/* Responsive corrections shared by public catalogue and enquiry pages. */
+.product-detail > *, .product-overview-columns > *, .enquiry-layout > * { min-width: 0; }
+.product-summary, .product-content-section, .enquiry-summary { overflow-wrap: anywhere; }
+.specs { table-layout: fixed; }
+.specs th { overflow-wrap: anywhere; }
+.footer-links { display: flex; flex-wrap: wrap; gap: 8px 20px; }
+.footer-links a { display: inline-flex; align-items: center; min-height: 44px; }
+.form-error-summary { border: 2px solid #a22; padding: 16px; margin-bottom: 24px; }
+.form-error-summary h2 { margin-top: 0; }
+.form-error-summary a { text-decoration: underline; }
+[data-filter-toggle] { display: none; }
+.enquiry-layout .form-row.consent-row { display: grid; grid-template-columns: 22px minmax(0, 1fr); align-items: start; gap: 10px; min-width: 0; padding: 12px 0; }
+.enquiry-layout .consent-row input[type=checkbox] { width: 22px; height: 22px; min-height: 0; margin: 2px 0 0; padding: 0; accent-color: #435637; cursor: pointer; }
+.enquiry-layout .consent-row label { display: block; min-width: 0; margin: 0; padding: 0; order: 0; white-space: normal; overflow-wrap: anywhere; font-size: .85rem; font-weight: 500; line-height: 1.7; color: #303c29; cursor: pointer; }
+.enquiry-layout .consent-row .errorlist, .enquiry-layout .consent-row small { grid-column: 1 / -1; margin: 0; }
+@media (max-width: 800px) {
+  .detail { grid-template-columns: minmax(0, 1fr); }
+  .living-site .nav { gap: 12px; }
+  .living-site .brand { flex: 1; min-width: 0; overflow-wrap: anywhere; }
+  .living-site .menu-toggle { min-width: 48px; min-height: 44px; flex-shrink: 0; }
+  .living-site .nav-links a { display: inline-flex; align-items: center; min-height: 44px; }
+  input, select, textarea,
+  .living-site .filters input, .living-site .filters select,
+  .search-options select, .motion-setting select { font-size: 16px; }
+  input:not([type=checkbox]), select, button { min-height: 44px; }
+  .search-options label:not(.sr-only) { min-height: 44px; }
+  .form-row:has(input[type=checkbox]) { display: flex; align-items: center; flex-wrap: wrap; gap: 8px; min-height: 44px; }
+  .form-row:has(input[type=checkbox]) label { flex: 1; order: 1; }
+  .form-row:has(input[type=checkbox]) input { flex: 0 0 22px; width: 22px; height: 22px; margin: 0; }
+  .form-row:has(input[type=checkbox]) .errorlist { flex-basis: 100%; order: 2; }
+  .brand-discovery a { display: inline-flex; align-items: center; min-height: 44px; }
+  .product-section-nav a { display: inline-flex; align-items: center; min-height: 44px; }
+  .product-section-nav { gap: 4px 20px; }
+  .product-quote-form { flex-wrap: wrap; }
+  .product-quote-form label { flex: 0 0 90px; }
+  .product-quote-form .button { flex: 1 1 160px; }
+}
+@media (max-width: 800px) {
+  .catalogue-workspace { grid-template-columns: minmax(0, 1fr); }
+  [data-filter-toggle] { display: inline-flex; width: 100%; justify-content: space-between; align-items: center; text-align: left; background: transparent; border: 0; font: inherit; cursor: pointer; }
+  [data-filter-toggle]::after { content: '+'; font-size: 24px; }
+  [data-filter-toggle][aria-expanded=true]::after { content: '−'; }
+  .filter-panel:has([data-filter-toggle]:not([hidden])) > h2 { display: none; }
+  .filter-panel [data-filter-toggle] { margin: 0; }
+  .filter-panel .filters { grid-template-columns: minmax(0, 1fr); }
+}

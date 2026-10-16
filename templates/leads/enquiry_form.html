@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+{% block content %}
+<section class="section">
+<div class="section-intro"><div><span class="eyebrow">Let’s define your requirements</span><h1>{{ title }}</h1></div><p>Tell us about your property, project stage and priorities. The team can then discuss a suitable scope and quotation.</p></div>
+<div class="enquiry-layout"><form method="post" class="panel" novalidate>{% csrf_token %}
+{% if form.errors %}<div class="form-error-summary" role="alert" tabindex="-1" data-form-errors><h2>Please check your enquiry</h2>{{ form.non_field_errors }}<ul>{% for field in form %}{% for error in field.errors %}<li><a href="#{{ field.id_for_label }}">{{ field.label }}: {{ error }}</a></li>{% endfor %}{% endfor %}</ul></div>{% endif %}
+{% if product %}<div class="enquiry-summary">Product enquiry: <strong>{{ product.name }}</strong></div>{% endif %}
+{% if quote_products %}<div class="enquiry-summary"><strong>Your shortlist</strong>{% for product in quote_products %}<p>{{ product.name }}</p>{% endfor %}</div>{% endif %}
+<div class="form-grid">{% for field in form %}<div class="form-row {% if field.name == 'message' or field.name == 'consent' %}form-full{% endif %}{% if field.name == 'consent' %} consent-row{% endif %}">{% if field.name == 'consent' %}{{ field }}{{ field.label_tag }}{% else %}{{ field.label_tag }}{{ field }}{% endif %}{{ field.errors }}{% if field.help_text %}<small>{{ field.help_text }}</small>{% endif %}</div>{% endfor %}</div>
+<button class="button">{% if is_survey %}Request site survey ↗{% else %}Submit enquiry ↗{% endif %}</button>
+<p class="muted">{% if is_survey %}This is a visit request. The team will confirm timing, service availability and any applicable visit charges before booking.{% else %}Your enquiry is saved for the team to review. No payment is collected here.{% endif %}</p></form>
+<aside class="enquiry-help">{% if not is_survey %}<p><a class="button" href="{% url 'leads:site_survey' %}">Request a site survey</a></p>{% endif %}
+<span class="eyebrow">Prepare for the conversation</span><h2>A little context goes a long way.</h2>
+<div class="process-step"><h3>Your space</h3><p>Home, office, store or facility — include the location and approximate size in your message.</p></div>
+<div class="process-step"><h3>Your priorities</h3><p>Tell us whether comfort, security, remote access or reliable connectivity matters most.</p></div>
+<div class="process-step"><h3>Your timeline</h3><p>Share whether you are planning, renovating or ready for installation.</p></div>
+{% if site_settings.phone %}<p>Prefer to speak?<br><a href="tel:{{ site_settings.phone }}"><strong>{{ site_settings.phone }}</strong></a></p>{% endif %}
+{% if contact_whatsapp_url %}<p><a class="button outline" href="{{ contact_whatsapp_url }}" target="_blank" rel="noopener noreferrer">Discuss on WhatsApp ↗</a></p>{% endif %}
+{% if site_settings.email %}<p><a href="mailto:{{ site_settings.email }}">{{ site_settings.email }}</a></p>{% endif %}
+{% if site_settings.business_hours %}<p>{{ site_settings.business_hours }}</p>{% endif %}</aside></div>
+</section>{% endblock %}

@@ -1,0 +1,38 @@
+{
+  "cp-plus": {
+    "file": "cp-plus-official.png",
+    "source_url": "https://www.cpplusworld.com/assets/img/logo.png",
+    "retrieved_on": "2026-10-16",
+    "sha256": "978715cf8e083bcfbeb03587ec26d798db2c5659dd355f5657dc63d3aa5afa8b"
+  },
+  "ezviz": {
+    "file": "ezviz-official.png",
+    "source_url": "https://sgpmall-statics.ezvizlife.com/ovs_mall/web/img/index/EZVIZ_logo.png",
+    "retrieved_on": "2026-10-16",
+    "sha256": "414cf4a46ec16e2176ecbc56007c7eebcc50d9830d463005e432f04187ee3c89"
+  },
+  "shelly": {
+    "file": "shelly-official.svg",
+    "source_url": "https://www.shelly.com/cdn/shop/files/logo.svg?v=1724332310",
+    "retrieved_on": "2026-10-16",
+    "sha256": "7c60e78bcdfff3feb2cf575dc42df021aa8f273d9c1c49f856c0fa5bbde44cc7"
+  },
+  "sonoff": {
+    "file": "sonoff-official.png",
+    "source_url": "https://sonoff.tech/cdn/shop/files/LOGO_99e376c4-bfd1-46df-9dae-d9ab14ef974c.png?v=1750829964",
+    "retrieved_on": "2026-10-16",
+    "sha256": "ca5549cc3d1c1305b34c2c036f76041ff5873f43997796f233918313138442b0"
+  },
+  "tp-link": {
+    "file": "tp-link-official.svg",
+    "source_url": "https://static.tp-link.com/assets/images/icon/logo.svg",
+    "retrieved_on": "2026-10-16",
+    "sha256": "a4593632ce0125db5faf34101ceaebe9ffd62370d56bcb13bbbb6e8db3442b5f"
+  },
+  "zipato": {
+    "file": "zipato-official.png",
+    "source_url": "https://www.zipato.com/wp-content/uploads/2025/10/zipato_logo_new-e1761209844642.png.pagespeed.ce.ip1ooX4phd.png",
+    "retrieved_on": "2026-10-16",
+    "sha256": "7edde88f7bf6d795badadd45b480755ae5fa242b246c19ecc7c730594562fd5c"
+  }
+}

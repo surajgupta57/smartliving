@@ -1,0 +1,11 @@
+{
+  "app_root": "/home/ACTUAL_ACCOUNT/apps/smartliving",
+  "public_root": "/home/ACTUAL_ACCOUNT/public_html/smartliving",
+  "python": "/home/ACTUAL_ACCOUNT/virtualenv/apps/smartliving/passenger/3.12/bin/python",
+  "repository": "git@github.com:surajgupta57/smartliving.git",
+  "ssh_key": "/home/ACTUAL_ACCOUNT/.ssh/smartliving_deploy",
+  "branch": "main",
+  "origin": "https://smartliving.seas-india.com",
+  "drain_seconds": 10,
+  "health_attempts": 12
+}

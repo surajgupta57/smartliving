@@ -1,0 +1,57 @@
+{
+  "products": 100000,
+  "search_tokens": 1000000,
+  "database_vendor": "mysql",
+  "seed_seconds": 119.09,
+  "serial": {
+    "suggestions_broad": {
+      "median_ms": 4.93,
+      "max_ms": 112.59,
+      "queries": 1
+    },
+    "suggestions_model": {
+      "median_ms": 3.95,
+      "max_ms": 6.65,
+      "queries": 1
+    },
+    "suggestions_multiword": {
+      "median_ms": 746.57,
+      "max_ms": 886.82,
+      "queries": 1
+    },
+    "catalogue": {
+      "median_ms": 78.75,
+      "max_ms": 143.52,
+      "queries": 5
+    },
+    "category_brand": {
+      "median_ms": 92.23,
+      "max_ms": 252.36,
+      "queries": 5
+    },
+    "search_results": {
+      "median_ms": 212.99,
+      "max_ms": 308.05,
+      "queries": 5
+    },
+    "deep_page": {
+      "median_ms": 216.97,
+      "max_ms": 248.85,
+      "queries": 5
+    },
+    "price_sort": {
+      "median_ms": 49.69,
+      "max_ms": 64.57,
+      "queries": 5
+    }
+  },
+  "concurrent": {
+    "workers": 4,
+    "requests": 40,
+    "median_ms": 148.71,
+    "p95_ms": 2636.28,
+    "requests_per_second": 6.43
+  },
+  "suggestion_plan": "-> Limit: 8 row(s)  (cost=503e+6 rows=8)\n    -> Nested loop inner join  (cost=503e+6 rows=5.03e+9)\n        -> Index lookup on catalogue_product using catalogue_public_name (is_active=1, is_published=1)  (cost=5973 rows=49387)\n        -> Single-row index lookup on <subquery2> using <auto_distinct_key> (product_id=catalogue_product.id)  (cost=34088..34088 rows=1)\n            -> Materialize with deduplication  (cost=34088..34088 rows=101866)\n                -> Filter: ((u0.token >= 'camera') and (u0.token < 'camerb'))  (cost=23901 rows=101866)\n                    -> Covering index range scan on U0 using catalogue_token_lookup over ('camera' <= token < 'camerb')  (cost=23901 rows=101866)\n",
+  "limitations": "Synthetic local data, in-process Django requests, no network/browser/image delivery or shared-host CPU limits. Not a production SLA."
+}

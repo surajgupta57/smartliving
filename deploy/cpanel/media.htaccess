@@ -1,0 +1,5 @@
+# Copy into public media. Images and PDF documents remain downloadable.
+Options -Indexes -ExecCGI
+<FilesMatch "(?i)(^\.|\.(php[0-9]*|phtml|phar|cgi|pl|py|pyc|sh|asp|aspx|jsp|shtml|htaccess|ini|sql|sqlite3?|log|bak)(\.|$))">
+    Require all denied
+</FilesMatch>

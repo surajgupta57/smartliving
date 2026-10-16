@@ -1,0 +1,6 @@
+# Add to the Smart Living document root ONLY. Preserve cPanel Passenger directives.
+Options -Indexes
+<FilesMatch "(?i)^(\..*|manage\.py|.*\.(py|pyc|pyo|sqlite3?|sql|gz|zip|tar|bak|ini|log|toml))$">
+    Require all denied
+</FilesMatch>
+# Use cPanel Force HTTPS or Django's redirect after verifying proxy HTTPS detection.

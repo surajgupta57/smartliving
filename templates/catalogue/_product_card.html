@@ -1,0 +1,12 @@
+<article class="card product-card">
+  <a class="product-image" href="{{ product.get_absolute_url }}" aria-label="View {{ product.name }}">{% if product.public_image %}<img src="{{ product.public_image.url }}" alt="{{ product.name }}" loading="lazy">{% endif %}</a>
+  <div class="product-card-content">
+    <div class="product-card-kicker"><span class="product-meta">{{ product.brand|default:'Smart Living' }}</span>{% if product.is_demo %}<span class="badge">Illustrative demo</span>{% elif product.is_featured %}<span class="badge">Featured</span>{% elif product.is_new %}<span class="badge">New</span>{% endif %}</div>
+    <h3><a href="{{ product.get_absolute_url }}">{{ product.name }}</a></h3>
+    <div class="product-card-model">Model <span>{{ product.model_number|default:product.sku }}</span></div>
+    {% if product.short_description %}<p class="product-card-description">{{ product.short_description|truncatechars:150 }}</p>{% endif %}
+    <div class="product-card-footer"><div class="product-card-price"><strong>{% if product.price_display_mode == product.PRICE_QUOTE %}Price on request{% else %}{{ product.price_label }}{% endif %}</strong></div>
+      <div class="card-actions"><a class="button" href="{{ product.get_absolute_url }}">View details <span aria-hidden="true">↗</span></a><a class="product-card-enquiry" href="{% url 'leads:product_enquiry' product.slug %}">Get a quote <span aria-hidden="true">→</span></a></div>
+    </div>
+  </div>
+</article>

@@ -1,0 +1,18 @@
+{% if brands %}
+<section class="living-brands" aria-labelledby="brands-heading" data-brand-carousel>
+  <div class="container living-brands-heading">
+    <div class="living-brands-title"><span class="living-brands-eyebrow">SMART LIVING<br>BRAND COLLECTION</span><h2 id="brands-heading">Brands we deal in.</h2></div>
+    <button type="button" class="living-brands-toggle" data-brand-motion-toggle aria-pressed="false" hidden>Pause motion</button>
+  </div>
+  <div class="living-brands-window">
+    <div class="living-brands-track">
+      <ul class="living-brands-group" aria-label="Browse products by brand">
+        {% for brand in brands %}<li><a href="{% url 'catalogue:product_list' %}?brand={{ brand.slug|urlencode }}"><img src="{{ brand.carousel_logo_url }}" alt="{{ brand.name }}" width="168" height="64" decoding="async"></a></li>{% endfor %}
+      </ul>
+      <div class="living-brands-group living-brands-copy" aria-hidden="true">
+        {% for brand in brands %}<span><img src="{{ brand.carousel_logo_url }}" alt="" width="168" height="64" decoding="async"></span>{% endfor %}
+      </div>
+    </div>
+  </div>
+</section>
+{% endif %}

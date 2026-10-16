@@ -1,0 +1,16 @@
+# Tested production package set; review security updates before each release.
+Django==5.2.18
+asgiref==3.11.0
+sqlparse==0.6.0
+tzdata==2025.3
+Pillow==12.3.0
+beautifulsoup4==4.15.0
+soupsieve==3.0.3
+typing_extensions==4.16.0
+django-import-export==4.4.2
+diff-match-patch==20241021
+tablib==3.10.0
+openpyxl==3.1.5
+et_xmlfile==2.0.0
+python-dotenv==1.2.4
+mysqlclient==2.3.0
