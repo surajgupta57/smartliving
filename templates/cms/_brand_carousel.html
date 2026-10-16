@@ -10,7 +10,7 @@
         {% for brand in brands %}<li><a href="{% url 'catalogue:product_list' %}?brand={{ brand.slug|urlencode }}"><img src="{{ brand.carousel_logo_url }}" alt="{{ brand.name }}" width="168" height="64" decoding="async"></a></li>{% endfor %}
       </ul>
       <div class="living-brands-group living-brands-copy" aria-hidden="true">
-        {% for brand in brands %}<span><img src="{{ brand.carousel_logo_url }}" alt="" width="168" height="64" decoding="async"></span>{% endfor %}
+        {% for brand in brands %}<a href="{% url 'catalogue:product_list' %}?brand={{ brand.slug|urlencode }}" tabindex="-1"><img src="{{ brand.carousel_logo_url }}" alt="{{ brand.name }}" width="168" height="64" decoding="async"></a>{% endfor %}
       </div>
     </div>
   </div>

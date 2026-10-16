@@ -195,3 +195,7 @@ Use [docs/PRODUCTION_LAUNCH.md](docs/PRODUCTION_LAUNCH.md). The strict `config.p
 Product documents are stored in private `var/private_documents` (or DJANGO_PRIVATE_DOCUMENT_ROOT) and served as checked attachments through `/documents/...`. They are included separately in `backup_site` backups. Transfer these private files separately from public media.
 
 Build the allowlisted source ZIP with `python scripts/build_release.py`. Add `--include-catalogue` only when the offline seed assets are needed. Credentials, live records/media, private files and generated outputs are excluded. The old catalogue seed ZIP is not the production release.
+
+## Public image optimisation
+
+See [IMAGE_OPTIMIZATION.md](docs/IMAGE_OPTIMIZATION.md) for lossless WebP display copies, responsive product images and the server command. Original uploads remain unchanged.

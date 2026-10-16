@@ -1,5 +1,6 @@
+{% load public_images %}
 <article class="card">
-  {% if page.card_image %}<img src="{{ page.card_image.url }}" alt="{{ page.title }}" loading="lazy">{% endif %}
+  {% if page.card_image %}<img src="{% image_url page.card_image 720 %}" srcset="{% image_srcset page.card_image %}" sizes="(max-width: 800px) 90vw, 390px" decoding="async" alt="{{ page.title }}" loading="lazy">{% endif %}
   {% if page.kind == 'project_guide' %}<span class="eyebrow">Project planning guide</span>{% endif %}
   <h2><a href="{{ page.get_absolute_url }}">{{ page.title }}</a></h2>
   <p>{{ page.intro }}</p><a class="button" href="{{ page.get_absolute_url }}">Read details</a>

@@ -1,6 +1,7 @@
 from django.shortcuts import get_object_or_404, render
 from django.templatetags.static import static
-from apps.catalogue.models import Brand, Category, Product
+from apps.catalogue.models import Brand, Category
+from apps.catalogue.queries import card_products
 from .models import ContentPage, FAQ, HomeSection
 
 
@@ -22,7 +23,7 @@ def home(request):
         else:
             continue
         brands.append(brand)
-    return render(request, "cms/home.html", {"sections": HomeSection.objects.filter(is_enabled=True), "featured_products": Product.objects.filter(is_active=True, is_published=True, is_featured=True).select_related("brand")[:6], "categories": Category.objects.filter(is_active=True, is_published=True, is_featured=True, parent__isnull=True)[:6], "faqs": FAQ.objects.filter(is_published=True)[:6], "brands": brands})
+    return render(request, "cms/home.html", {"sections": HomeSection.objects.filter(is_enabled=True), "featured_products": card_products().filter(is_featured=True)[:6], "categories": Category.objects.filter(is_active=True, is_published=True, is_featured=True, parent__isnull=True)[:6], "faqs": FAQ.objects.filter(is_published=True)[:6], "brands": brands})
 
 
 def listing(request, kind, title):
