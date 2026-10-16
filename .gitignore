@@ -16,6 +16,7 @@ __pycache__/
 var/private_imports/
 var/private_documents/
 var/mysql-transfer.json
+/var/
 media/
 /catalogue_seed/
 /smartliving-catalogue-500.zip
