@@ -226,6 +226,9 @@ class DeployerTests(SimpleTestCase):
                 self.deployer.verify_public_static(self.candidate)
             response.read.return_value = b'body{}'
             self.deployer.verify_public_static(self.candidate)
+            request = opener.open.call_args.args[0]
+            self.assertEqual(request.get_header('User-agent'), 'SmartLiving-Deploy/1')
+            self.assertEqual(request.get_header('Accept-encoding'), 'identity')
 
     def test_public_adoption_snapshots_served_static_without_moving_uploads(self):
         self.enable_public_layout()

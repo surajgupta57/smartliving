@@ -318,7 +318,9 @@ class Deployer:
         expected = hashlib.sha256((static / name).read_bytes()).digest()
         opener = build_opener(NoRedirect(), HTTPSHandler(context=ssl.create_default_context()))
         try:
-            request = Request(self.c.origin + '/static/' + quote(name), headers={'Cache-Control': 'no-cache'})
+            request = Request(self.c.origin + '/static/' + quote(name), headers={
+                'Cache-Control': 'no-cache', 'User-Agent': 'SmartLiving-Deploy/1',
+                'Accept': 'text/css', 'Accept-Encoding': 'identity'})
             with opener.open(request, timeout=20) as response:
                 if response.status != 200 or hashlib.sha256(response.read(4 * 1024 * 1024)).digest() != expected:
                     raise DeploymentError('Published stylesheet content does not match the candidate.')
