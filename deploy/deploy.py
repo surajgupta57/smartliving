@@ -349,7 +349,8 @@ class Deployer:
             if '.git' in parts:
                 continue
             if path.is_symlink() or parts[0] in {'media', 'staticfiles', 'var', '.venv'} or path.suffix in {'.sqlite3', '.sql'}:
-                raise DeploymentError('Git release contains storage, a database or a symlink; remove it from the repository before deploying.')
+                relative = path.relative_to(release).as_posix()
+                raise DeploymentError(f'Git release contains storage, a database or a symlink at {relative!r}; untrack it locally with git rm --cached, commit and push. Local files need not be deleted.')
             if path.name in {'.env', 'deploy.json'} or (path.name.startswith('.env.') and not path.name.endswith('.example')):
                 raise DeploymentError('Git release contains a private environment/configuration file.')
         atomic_json(release / 'deployment-manifest.json', {'commit': commit, 'created': stamp()})
